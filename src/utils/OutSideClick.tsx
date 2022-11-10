@@ -13,8 +13,6 @@ export const OutSideClick = <T,>(props: {
   };
 
   return (
-    <div onClick={(e) => handleClick(e)} onBlur={(e) => console.log(e)}>
-      {props.children as ReactNode}
-    </div>
+    <div onClick={(e) => handleClick(e)}>{props.children as ReactNode}</div>
   );
 };

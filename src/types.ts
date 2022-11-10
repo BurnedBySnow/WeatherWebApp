@@ -1,15 +1,20 @@
 import { filter } from "./assets/weathericons";
 
 const a = filter();
-type WeatherType = keyof typeof a;
+export type WeatherType = keyof typeof a;
 
 export interface WeatherData {
   summary?: WeatherType;
-  date: Date;
+  date: string;
   temp: number;
   windSpeed: number;
   humidity: number;
   rainAmount?: number;
+}
+
+export interface WeatherObject {
+  id: string;
+  weather: WeatherData[];
 }
 
 export interface ApiWeather {

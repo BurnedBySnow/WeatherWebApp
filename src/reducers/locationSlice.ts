@@ -13,9 +13,13 @@ export const locationSlice = createSlice({
     removeLocation: (state: Location[], action) => {
       return state.filter((item) => item.id !== action.payload);
     },
+    setLocations: (state: Location[], action) => {
+      return action.payload;
+    },
   },
 });
 
-export const { addLocation, removeLocation } = locationSlice.actions;
+export const { addLocation, removeLocation, setLocations } =
+  locationSlice.actions;
 
 export default locationSlice.reducer;

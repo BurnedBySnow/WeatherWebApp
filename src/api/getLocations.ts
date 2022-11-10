@@ -8,7 +8,7 @@ const getLocations = async (value: string): Promise<ApiLocation> => {
     await axios.get(
       "https://nominatim.openstreetmap.org/search?q=" +
         value +
-        "&format=geojson&limit=10"
+        "&format=geojson&limit=100"
     )
   ).data;
   return result;

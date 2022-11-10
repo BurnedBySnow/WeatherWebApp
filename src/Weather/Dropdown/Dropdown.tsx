@@ -1,23 +1,19 @@
 import "./Dropdown.scss";
 import { Location } from "../../types";
 import getUserLocation from "../../api/getUserLocation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isEmpty } from "../../utils/isEmpty";
-import { nanoid } from "@reduxjs/toolkit";
+import { Action, nanoid } from "@reduxjs/toolkit";
 
 const Dropdown = (props: {
   setShowDropdown: (b: boolean) => void;
-  addLocationCard: (item: {
-    id: string;
-    name: string;
-    category: string;
-    type: string;
-    latitude: number;
-    longitude: number;
-  }) => void;
+  addLocationCard: (item: Location) => void;
   dropdownData: Location[];
+  dropdownIndex: number;
+  dropdownRef: React.RefObject<HTMLDivElement>;
 }) => {
   const { setShowDropdown, addLocationCard, dropdownData } = props;
+  const slicedList = dropdownData.slice(0, 5);
 
   const hadleOnClick = (pos: Location, id: string) => {
     let newItem = {
@@ -38,6 +34,10 @@ const Dropdown = (props: {
     };
     addLocationCard(newItem);
     setShowDropdown(false);
+    const input: HTMLInputElement = document.getElementById(
+      "search-input"
+    ) as HTMLInputElement;
+    input.value = "";
   };
 
   const currentPosClick = async () => {
@@ -64,21 +64,47 @@ const Dropdown = (props: {
   };
 
   return (
-    <div className="dropdown-container" tabIndex={0}>
+    <div
+      id="dropdown"
+      className="dropdown-container"
+      tabIndex={0}
+      ref={props.dropdownRef}
+    >
       {!isEmpty(dropdownData) ? (
-        dropdownData.map((item) => {
-          return (
-            <div
-              className="dropdown-item"
-              onClick={() => hadleOnClick(item, item.id)}
-            >
-              <div className="dropdown-item-info">{item.name}</div>
+        <div className="dropdown-item-wrapper">
+          {slicedList.map((item, index) => {
+            return (
+              <div
+                className={`dropdown-item ${
+                  index === props.dropdownIndex ? " active" : ""
+                }`}
+                onClick={() => hadleOnClick(item, item.id)}
+              >
+                <div className="dropdown-item-info">
+                  <p>{item.name}</p>
+                  <p>{item.type}</p>
+                </div>
+              </div>
+            );
+          })}
+          <div
+            className={`dropdown-item ${
+              props.dropdownIndex === 5 ? " active" : ""
+            }`}
+          >
+            <div className="dropdown-item-info last">
+              See all{" (" + dropdownData.length + ")"}
             </div>
-          );
-        })
+          </div>
+        </div>
       ) : (
-        <div className="dropdown-item" onClick={() => currentPosClick()}>
-          <div className="dropdown-item-info">Your current location</div>
+        <div
+          className="dropdown-item userpos"
+          onClick={() => currentPosClick()}
+        >
+          <div className="dropdown-item-info userpos">
+            Your current location
+          </div>
         </div>
       )}
     </div>

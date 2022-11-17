@@ -23,7 +23,6 @@ import { isEmpty } from "../../utils/isEmpty";
 const Info = (props: {
   location: Location;
   removeCard: (id: string) => void;
-  setShowModal: (b: boolean) => void;
 }) => {
   const { location, removeCard } = props;
   const [isHovering, setIsHovering] = useState<boolean>(false);

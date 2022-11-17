@@ -43,10 +43,12 @@
 
 .dropdown-item-info {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
   position: relative;
-  height: 70px;
-  padding: 20px;
+  height: 80px;
+  padding: 0 20px 5px 20px;
   width: 100%;
   &:hover::after {
     border-bottom: none;
@@ -61,20 +63,26 @@
     right: 1.2rem;
     top: 0;
   }
-  :last-child {
-    justify-content: flex-end;
-    text-transform: capitalize;
-    margin-right: 10px;
+  p {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+  }
+  :first-child {
+    font-size: 20px;
+    margin-bottom: 5px;
   }
 }
 
 .dropdown-item-info.last {
+  justify-content: center;
   &:after {
     display: none;
   }
 }
 
 .dropdown-item-info.userpos {
+  justify-content: center;
+  font-size: 18px;
   &:after {
     display: none;
   }

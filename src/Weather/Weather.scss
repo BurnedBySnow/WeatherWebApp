@@ -5,9 +5,11 @@
 
 .main-page {
   display: flex;
+  flex-direction: column;
   width: 100vw;
-  height: 100vh;
-  justify-content: center;
+  height: 96vh;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #cards {
@@ -15,9 +17,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  align-items: center;
-  align-content: flex-start;
-  margin-top: 10vh;
+  margin-top: 5vh;
   max-width: 90vw;
   width: calc(100% - 20px);
 }

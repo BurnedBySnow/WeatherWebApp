@@ -20,15 +20,12 @@ import debounce, { DebounceOptions } from "debounce-promise";
 import { Location, ApiWeather, WeatherData, WeatherType } from "../types";
 import { nanoid } from "nanoid";
 import { AnimatePresence, motion } from "framer-motion";
-import Modal from "./Modal/Modal";
-import getWeather from "../api/getWeather";
 import { updateWeatherData } from "../utils/updateWeatherData";
+import { setSearchData } from "../reducers/searchSlice";
+import { addWeatherData } from "../utils/addWeatherData";
 
 const Weather = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [dropdownData, setDropdownData] = useState<Location[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const locations = useSelector((state: RootState) => state.locations);
   const dispatch = useDispatch();
@@ -52,51 +49,11 @@ const Weather = () => {
         longitude: +item.geometry.coordinates[0],
       };
     });
-    setDropdownData(arr);
+    dispatch(setSearchData(arr));
   };
 
   const changeSearch = (value: string) => {
     debouncedLoadOptions(value);
-  };
-
-  const addLocationCard = async (item: Location) => {
-    const location: Location = {
-      id: item.id,
-      name: item.name,
-      category: item.category,
-      type: item.type,
-      latitude: item.latitude,
-      longitude: item.longitude,
-    };
-    dispatch(addLocation(location));
-
-    addWeatherData(location.latitude, location.longitude, location.id);
-    setDropdownData([]);
-  };
-
-  const addWeatherData = async (lat: number, lon: number, id: string) => {
-    const weatherData = await getWeather(lat, lon);
-    const tempWeather: WeatherData[] = weatherData?.properties.timeseries.map(
-      (weatherItem: ApiWeather) => {
-        return {
-          summary: weatherItem.data.next_1_hours
-            ? (weatherItem.data.next_1_hours.summary.symbol_code as WeatherType)
-            : "none",
-          date: weatherItem.time,
-          temp: weatherItem.data.instant.details.air_temperature,
-          windSpeed: weatherItem.data.instant.details.wind_speed,
-          humidity: weatherItem.data.instant.details.relative_humidity,
-          rainAmount: weatherItem.data.next_1_hours
-            ? weatherItem.data.next_1_hours.details.precipitation_amount
-            : undefined,
-        };
-      }
-    );
-    const weatherInfo: { id: string; weather: WeatherData[] } = {
-      id: id,
-      weather: tempWeather,
-    };
-    dispatch(addWeather(weatherInfo));
   };
 
   const removeCard = (id: string) => {
@@ -125,7 +82,7 @@ const Weather = () => {
     if (locations?.length)
       localStorage.setItem("locations", JSON.stringify(locations));
     if (locations.length === 0 || locations.length === null)
-      localStorage.clear();
+      localStorage.removeItem("locations");
   }, [locations]);
 
   return (
@@ -134,8 +91,6 @@ const Weather = () => {
         changeSearch={changeSearch}
         setShowDropdown={(b: boolean) => setShowDropdown(b)}
         showDropdown={showDropdown}
-        addLocationCard={addLocationCard}
-        dropdownData={dropdownData}
       />
 
       <div className="main-page">
@@ -148,13 +103,11 @@ const Weather = () => {
                     location={location}
                     key={location.id}
                     removeCard={removeCard}
-                    setShowModal={(b: boolean) => setShowModal(b)}
                   />
                 );
               })}
           </AnimatePresence>
         </div>
-        {showModal && <Modal setShowModal={(b: boolean) => setShowModal(b)} />}
       </div>
     </div>
   );

@@ -1,0 +1,29 @@
+.location-list {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.list-container {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 40px;
+  background-color: #908cb341;
+  border-radius: 12px;
+  box-shadow: -4px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.location-name {
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  font-size: 30px;
+  text-transform: capitalize;
+  border-bottom: 2px solid #292836;
+}

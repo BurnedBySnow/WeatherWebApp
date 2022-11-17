@@ -4,40 +4,29 @@ import getUserLocation from "../../api/getUserLocation";
 import { useEffect, useState } from "react";
 import { isEmpty } from "../../utils/isEmpty";
 import { Action, nanoid } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { addLocationCard } from "../../utils/addLocationCard";
+import { useNavigate } from "react-router-dom";
 
 const Dropdown = (props: {
   setShowDropdown: (b: boolean) => void;
-  addLocationCard: (item: Location) => void;
-  dropdownData: Location[];
+  setDropdownIndex: (n: number) => void;
   dropdownIndex: number;
   dropdownRef: React.RefObject<HTMLDivElement>;
+  setInputValue: (value: string) => void;
+  handleSeeAllClick: () => void;
 }) => {
-  const { setShowDropdown, addLocationCard, dropdownData } = props;
-  const slicedList = dropdownData.slice(0, 5);
+  const { setShowDropdown, setInputValue } = props;
 
-  const hadleOnClick = (pos: Location, id: string) => {
-    let newItem = {
-      id: "",
-      name: "",
-      category: "",
-      type: "",
-      latitude: 0,
-      longitude: 0,
-    };
-    newItem = {
-      id: id,
-      name: pos.name,
-      category: pos.category,
-      type: pos.type,
-      latitude: pos.latitude,
-      longitude: pos.longitude,
-    };
-    addLocationCard(newItem);
+  const dropdownData = useSelector((state: RootState) => state.searchData);
+  const navigate = useNavigate();
+
+  const hadleOnClick = (item: Location) => {
+    addLocationCard(item);
     setShowDropdown(false);
-    const input: HTMLInputElement = document.getElementById(
-      "search-input"
-    ) as HTMLInputElement;
-    input.value = "";
+    setInputValue("");
+    navigate("/");
   };
 
   const currentPosClick = async () => {
@@ -61,6 +50,8 @@ const Dropdown = (props: {
     };
     addLocationCard(newItem);
     setShowDropdown(false);
+    props.setDropdownIndex(-1);
+    navigate("/");
   };
 
   return (
@@ -72,29 +63,37 @@ const Dropdown = (props: {
     >
       {!isEmpty(dropdownData) ? (
         <div className="dropdown-item-wrapper">
-          {slicedList.map((item, index) => {
+          {dropdownData.slice(0, 5).map((item, index) => {
             return (
               <div
+                key={index}
                 className={`dropdown-item ${
                   index === props.dropdownIndex ? " active" : ""
                 }`}
-                onClick={() => hadleOnClick(item, item.id)}
+                onClick={() => hadleOnClick(item)}
               >
                 <div className="dropdown-item-info">
-                  <p>{item.name}</p>
-                  <p>{item.type}</p>
+                  <p>{item.name.slice(0, item.name.indexOf(","))}</p>
+                  <p>{item.name.slice(item.name.indexOf(" "))}</p>
                 </div>
               </div>
             );
           })}
           <div
-            className={`dropdown-item ${
-              props.dropdownIndex === 5 ? " active" : ""
+            className={`dropdown-item userpos${
+              props.dropdownIndex === dropdownData.slice(0, 5).length
+                ? " active"
+                : ""
             }`}
           >
-            <div className="dropdown-item-info last">
-              See all{" (" + dropdownData.length + ")"}
-            </div>
+            {dropdownData.length > 5 && (
+              <div
+                className="dropdown-item-info last"
+                onClick={props.handleSeeAllClick}
+              >
+                See all{" (" + dropdownData.length + ")"}
+              </div>
+            )}
           </div>
         </div>
       ) : (

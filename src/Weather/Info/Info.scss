@@ -1,4 +1,4 @@
-.card {
+.info-card {
   position: relative;
   max-height: 600px;
   max-width: 400px;
@@ -11,6 +11,11 @@
   flex-direction: column;
   z-index: 0;
   cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
 }
 
 .card-location {
@@ -150,7 +155,7 @@
 // }
 
 @media (max-width: 912px) {
-  .card {
+  .info-card {
     max-width: 600px;
     width: auto;
     height: 200px;

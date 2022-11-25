@@ -1,0 +1,40 @@
+.item {
+  display: flex;
+  justify-content: center;
+  min-width: none;
+  min-width: 700px;
+  height: 100px;
+}
+
+.date {
+  font-size: 32px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-top: 2px solid white;
+}
+
+.summary {
+  display: flex;
+  width: 100px;
+  flex-direction: column;
+  border-top: 2px solid white;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.item-category {
+  display: flex;
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  font-size: 24px;
+  border-top: 2px solid white;
+}

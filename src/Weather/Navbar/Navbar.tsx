@@ -48,7 +48,7 @@ const Navbar = (props: {
       if (
         dropdownRef.current?.children[0].children[
           dropdownIndex
-        ].className.includes("userpos")
+        ].className.includes("all")
       ) {
         props.setShowDropdown(false);
         setDropdownIndex(-1);
@@ -121,7 +121,7 @@ const Navbar = (props: {
           <img src={searchicon} />
         </button>
       </div>
-      {props.showDropdown && (
+      {props.showDropdown && !path.pathname.includes("search") && (
         <Dropdown
           setShowDropdown={(b: boolean) => props.setShowDropdown(b)}
           setDropdownIndex={(n: number) => setDropdownIndex(n)}

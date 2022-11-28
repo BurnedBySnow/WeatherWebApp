@@ -38,22 +38,24 @@ const LocationInfo = () => {
 
   const { id } = useParams();
 
-  const handleLeftArrow = () => {
-    if (page === 0) return;
-    setPage(page - 1);
-  };
+  // useEffect(() => {
+  //   const locationsStorage: Location[] = JSON.parse(
+  //     localStorage.getItem("locations") || "{}"
+  //   );
+  //   if (locationsStorage.length > 0) {
+  //     dispatch(setLocations(locationsStorage));
+  //     locationsStorage.forEach((item) => {
+  //       addWeatherData(item.latitude, item.longitude, item.id);
+  //     });
+  //   }
+  // }, []);
 
-  const handleRightArrow = () => {
-    document.getElementById("card-container")?.scroll;
-  };
-
-  const handleResize = () => {
-    setAmount(window.innerWidth / 280 - 1);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-  }, []);
+  // useEffect(() => {
+  //   if (locations?.length)
+  //     localStorage.setItem("locations", JSON.stringify(locations));
+  //   if (locations.length === 0 || locations.length === null)
+  //     localStorage.removeItem("locations");
+  // }, [locations]);
 
   return (
     <div className="location-info">

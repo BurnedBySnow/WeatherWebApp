@@ -28,6 +28,7 @@ const Weather = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   const locations = useSelector((state: RootState) => state.locations);
+  const weather = useSelector((state: RootState) => state.weather);
   const dispatch = useDispatch();
 
   const wait = 250; // milliseconds
@@ -70,12 +71,12 @@ const Weather = () => {
     const locationsStorage: Location[] = JSON.parse(
       localStorage.getItem("locations") || "{}"
     );
-    if (locationsStorage.length > 0) {
-      dispatch(setLocations(locationsStorage));
-      locationsStorage.forEach((item) => {
-        addWeatherData(item.latitude, item.longitude, item.id);
-      });
-    }
+    if (!(locationsStorage.length > 0)) return;
+    dispatch(setLocations(locationsStorage));
+    if (weather.length !== 0) return;
+    locationsStorage.forEach((item) => {
+      addWeatherData(item.latitude, item.longitude, item.id);
+    });
   }, []);
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { Location, ApiWeather, WeatherData, WeatherType } from "../types";
 import "./LocationList.scss";
 import List from "./List/List";
 import { useParams } from "react-router-dom";
+import { setLocations } from "../reducers/locationSlice";
 
 const LocationList = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -45,12 +46,17 @@ const LocationList = () => {
   };
 
   useEffect(() => {
-    const locationsStorage: Location[] = JSON.parse(
+    const searchStorage: Location[] = JSON.parse(
       localStorage.getItem("searchData") || "{}"
     );
-    if (locationsStorage.length > 0) {
-      dispatch(setSearchData(locationsStorage));
+    if (searchStorage.length > 0) {
+      dispatch(setSearchData(searchStorage));
     }
+    const locationsStorage: Location[] = JSON.parse(
+      localStorage.getItem("locations") || "{}"
+    );
+    if (!(locationsStorage.length > 0)) return;
+    dispatch(setLocations(locationsStorage));
   }, []);
 
   useEffect(() => {

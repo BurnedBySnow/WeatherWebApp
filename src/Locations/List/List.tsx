@@ -11,9 +11,9 @@ const List = () => {
   const navigate = useNavigate();
 
   const handleOnClick = (item: Location) => {
+    localStorage.removeItem("searchData");
     addLocationCard(item);
     navigate("/");
-    localStorage.removeItem("searchData");
   };
 
   return (

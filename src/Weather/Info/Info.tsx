@@ -74,7 +74,7 @@ const Info = (props: {
     <NavLink
       className="link"
       to={`/location/${location.name.slice(0, location.name.indexOf(","))}`}
-      state={location.id}
+      state={location}
     >
       <motion.div
         className="info-card"

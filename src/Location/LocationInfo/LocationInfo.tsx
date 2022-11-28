@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { RootState } from "../../store";
 import { WeatherData } from "../../types";
+import { addWeatherData } from "../../utils/addWeatherData";
+import { isEmpty } from "../../utils/isEmpty";
 import Card from "./Card/Card";
 import "./LocationInfo.scss";
 import Item from "./Table/Item";
@@ -33,29 +35,20 @@ const LocationInfo = () => {
 
   const location = useLocation();
   const weather = useSelector((state: RootState) => state.weather).find(
-    (item) => item.id === location.state
+    (item) => item.id === location.state.id
   );
 
   const { id } = useParams();
 
-  // useEffect(() => {
-  //   const locationsStorage: Location[] = JSON.parse(
-  //     localStorage.getItem("locations") || "{}"
-  //   );
-  //   if (locationsStorage.length > 0) {
-  //     dispatch(setLocations(locationsStorage));
-  //     locationsStorage.forEach((item) => {
-  //       addWeatherData(item.latitude, item.longitude, item.id);
-  //     });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (locations?.length)
-  //     localStorage.setItem("locations", JSON.stringify(locations));
-  //   if (locations.length === 0 || locations.length === null)
-  //     localStorage.removeItem("locations");
-  // }, [locations]);
+  useEffect(() => {
+    if (weather) return;
+    addWeatherData(
+      location.state.latitude,
+      location.state.longitude,
+      location.state.id
+    );
+    console.log("test");
+  }, []);
 
   return (
     <div className="location-info">
@@ -70,7 +63,7 @@ const LocationInfo = () => {
             <div className="top-row-wind">wind speed</div>
           </div>
           {weather?.weather.map((item, index) => (
-            <Item item={item} />
+            <Item item={item} key={index} />
           ))}
         </div>
       </div>

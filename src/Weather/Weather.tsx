@@ -73,7 +73,7 @@ const Weather = () => {
     );
     if (!(locationsStorage.length > 0)) return;
     dispatch(setLocations(locationsStorage));
-    if (weather.length !== 0) return;
+    dispatch(updateWeather([]));
     locationsStorage.forEach((item) => {
       addWeatherData(item.latitude, item.longitude, item.id);
     });
